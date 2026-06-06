@@ -2,7 +2,7 @@
 
 - **Language**: TypeScript
 - **Package Manager**: bun
-- **Add-ons**: prettier, eslint, vitest, tailwindcss, drizzle, better-auth, mcp, drizzle-kit, libsql/client
+- **Add-ons**: prettier, eslint, vitest, tailwindcss, drizzle, better-auth, mcp, drizzle-kit, libsql/client, shadcn-svelte
 
 ---
 
