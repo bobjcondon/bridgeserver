@@ -15,15 +15,11 @@ export const user = sqliteTable('user', {
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
 
-	// Role-based permission
-	permission: text('permission', { enum: ['ADMIN', 'DIRECTOR', 'PLAYER'] })
+	// Role-based 
+	role: text('role', { enum: ['ADMIN', 'DIRECTOR', 'PLAYER'] })
 		.notNull()
 		.default('PLAYER'),
 
-	// Privacy preferences (all opt-in, default false)
-	shareEmail: integer('share_email', { mode: 'boolean' }).notNull().default(false),
-	sharePhone: integer('share_phone', { mode: 'boolean' }).notNull().default(false),
-	clubEmail: integer('club_email', { mode: 'boolean' }).notNull().default(false),
 });
 
 export const session = sqliteTable(

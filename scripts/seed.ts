@@ -30,12 +30,7 @@ const seedLocations = [
 
 // 5 users (with matching players) + 5 extra players = 10 total
 const userData = [
-  { name: 'Alice Walker',   email: 'alice@example.com',   firstName: 'Alice',   lastName: 'Walker' },
-  { name: 'Bob Condon',     email: 'bobjcondon@gmail.com', firstName: 'Bob',     lastName: 'Condon' },
-  { name: 'Bob Chen',       email: 'bob@example.com',     firstName: 'Bob',     lastName: 'Chen' },
-  { name: 'Carol Davis',    email: 'carol@example.com',   firstName: 'Carol',   lastName: 'Davis' },
-  { name: 'David Kim',      email: 'david@example.com',   firstName: 'David',   lastName: 'Kim' },
-  { name: 'Eva Martinez',   email: 'eva@example.com',     firstName: 'Eva',     lastName: 'Martinez' },
+  { email: 'bobjcondon@gmail.com',   firstName: 'Bob',   lastName: 'Condon', phone: '555-100-0001', role: 'ADMIN' },
 ];
 
 const extraPlayers = [
@@ -52,20 +47,22 @@ async function seed() {
 
   console.log('Seeding users and matching players...');
   for (const u of userData) {
-    await db.insert(user).values({
+    const [existingUser] = await db.insert(user).values({
       id: nanoid(15),
-      name: u.name,
+      name: `${u.firstName} ${u.lastName}`,
       email: u.email,
       emailVerified: false,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }).onConflictDoNothing();
+      role: u.role,
+    }).onConflictDoNothing().returning({ id: user.id });
 
     await db.insert(players).values({
       firstName: u.firstName,
       lastName: u.lastName,
       email: u.email,
       phone: `555-100-${String(userData.indexOf(u) + 1).padStart(4, '0')}`,
+      userId: existingUser ? existingUser.id : undefined,
     }).onConflictDoNothing();
   }
 

@@ -11,9 +11,9 @@ const client = createClient({ url });
 const db = drizzle(client);
 
 // Edit this list to set passwords and roles for specific users.
-// permission: 'ADMIN' | 'DIRECTOR' | 'PLAYER'
-const updates: { email: string; password: string; permission: 'ADMIN' | 'DIRECTOR' | 'PLAYER' }[] = [
-  { email: 'bobjcondon@gmail.com',   password: '7NoTrump', permission: 'DIRECTOR' },
+// : 'ADMIN' | 'DIRECTOR' | 'PLAYER'
+const updates: { email: string; password: string; role: 'ADMIN' | 'DIRECTOR' | 'PLAYER' }[] = [
+  { email: 'bobjcondon@gmail.com',   password: '7NoTrump', role: 'DIRECTOR' },
 ];
 
 async function resetPasswords() {
@@ -31,7 +31,7 @@ async function resetPasswords() {
     // Update role on the user record
     await db
       .update(user)
-      .set({ permission: entry.permission })
+      .set({ role: entry.role })
       .where(eq(user.id, foundUser.id));
 
     // Hash and update the credential account password
@@ -44,7 +44,7 @@ async function resetPasswords() {
     if (result.rowsAffected === 0) {
       console.warn(`  WARN  ${entry.email} — no credential account found (may use OAuth only)`);
     } else {
-      console.log(`  OK    ${entry.email} — password reset, role set to ${entry.permission}`);
+      console.log(`  OK    ${entry.email} — password reset, role set to ${entry.}`);
     }
   }
 

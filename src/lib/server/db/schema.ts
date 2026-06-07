@@ -3,6 +3,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 // src/lib/server/db/schema.ts
 import { relations } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
+import { user } from './auth.schema.js';
 
 const timestamps = {
   createdAt: integer('created_at', { mode: 'timestamp' })
@@ -13,12 +14,20 @@ const timestamps = {
     .$defaultFn(() => new Date())
 };
 
+// Optional 1-1 relation to user.
+// Every user has a player but not all players are registered users.
 export const players = sqliteTable('players', {
   id: text('id').primaryKey().$defaultFn(() => nanoid(15)),
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   email: text('email').notNull().unique(),
   phone: text('phone'),
+  // Privacy preferences (all opt-in, default false)
+	shareEmail: integer('share_email', { mode: 'boolean' }).notNull().default(false),
+	sharePhone: integer('share_phone', { mode: 'boolean' }).notNull().default(false),
+	clubEmail: integer('club_email', { mode: 'boolean' }).notNull().default(false),
+  // nullable() makes the relationship optional (1-to-0/1)
+  userId: integer('user_id').references(() => user.id).unique(), 
   ...timestamps
 });
 

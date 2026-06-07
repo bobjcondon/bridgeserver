@@ -27,11 +27,17 @@ CREATE TABLE `players` (
 	`last_name` text NOT NULL,
 	`email` text NOT NULL,
 	`phone` text,
+	`share_email` integer DEFAULT false NOT NULL,
+	`share_phone` integer DEFAULT false NOT NULL,
+	`club_email` integer DEFAULT false NOT NULL,
+	`user_id` integer,
 	`created_at` integer NOT NULL,
-	`updated_at` integer NOT NULL
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `players_email_unique` ON `players` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `players_user_id_unique` ON `players` (`user_id`);--> statement-breakpoint
 CREATE TABLE `tournaments` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -83,7 +89,8 @@ CREATE TABLE `user` (
 	`email_verified` integer DEFAULT false NOT NULL,
 	`image` text,
 	`created_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL,
-	`updated_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL
+	`updated_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL,
+	`role` text DEFAULT 'PLAYER' NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint

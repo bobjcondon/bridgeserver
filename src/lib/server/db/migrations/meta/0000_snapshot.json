@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8a5f9cdd-253f-4238-b842-13adf2f22ea4",
+  "id": "d3c747df-6e5e-4c70-a563-deb9ad34a900",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "locations": {
@@ -201,6 +201,37 @@
           "notNull": false,
           "autoincrement": false
         },
+        "share_email": {
+          "name": "share_email",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "share_phone": {
+          "name": "share_phone",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "club_email": {
+          "name": "club_email",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "integer",
@@ -223,9 +254,30 @@
             "email"
           ],
           "isUnique": true
+        },
+        "players_user_id_unique": {
+          "name": "players_user_id_unique",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "players_user_id_user_id_fk": {
+          "name": "players_user_id_user_id_fk",
+          "tableFrom": "players",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -585,6 +637,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'PLAYER'"
         }
       },
       "indexes": {
