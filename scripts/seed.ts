@@ -31,6 +31,7 @@ const seedLocations = [
 // 5 users (with matching players) + 5 extra players = 10 total
 const userData = [
   { name: 'Alice Walker',   email: 'alice@example.com',   firstName: 'Alice',   lastName: 'Walker' },
+  { name: 'Bob Condon',     email: 'bobjcondon@gmail.com', firstName: 'Bob',     lastName: 'Condon' },
   { name: 'Bob Chen',       email: 'bob@example.com',     firstName: 'Bob',     lastName: 'Chen' },
   { name: 'Carol Davis',    email: 'carol@example.com',   firstName: 'Carol',   lastName: 'Davis' },
   { name: 'David Kim',      email: 'david@example.com',   firstName: 'David',   lastName: 'Kim' },

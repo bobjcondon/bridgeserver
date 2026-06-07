@@ -1,0 +1,11 @@
+# Debug Header
+
+The Signin buttone in the header (src/routs/Header.svelte) should change depending on whether a user is signed in.
+If I sign in, the signin button correctly shows the status (by displaying "Signout").
+If I navigate back to the "/" route, the signin button incorrectly shows I'm logged out (by showing "Signin").
+
+
+Header.svelte is written in legacy mode.   Consider changing it to Svelte 5 runes if that will fix the problem.
+Otherwise, diagnose the problem and tell me how to fix it.
+
+

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import github from '$lib/images/github.svg';
 	import logo from '$lib/images/svelte-logo.svg';
 </script>
@@ -24,34 +23,28 @@
 			<li aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
 				<a href={resolve('/about')}>About</a>
 			</li>
-			<li aria-current={page.url.pathname.startsWith('/players') ? 'page' : undefined}>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger class="nav-trigger">Players</DropdownMenu.Trigger>
-					<DropdownMenu.Content>
-						<DropdownMenu.Item href="/players">All</DropdownMenu.Item>
-						<DropdownMenu.Item href="/players/new">New</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+			<li class="has-dropdown" aria-current={page.url.pathname.startsWith('/players') ? 'page' : undefined}>
+				<button class="nav-trigger">Players</button>
+				<div class="dropdown-menu">
+					<a href={resolve('/players')}>All</a>
+					<a href={resolve('/players/new')}>New</a>
+				</div>
 			</li>
-			<li aria-current={page.url.pathname.startsWith('/locations') ? 'page' : undefined}>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger class="nav-trigger">Locations</DropdownMenu.Trigger>
-					<DropdownMenu.Content>
-						<DropdownMenu.Item href="/locations">All</DropdownMenu.Item>
-						<DropdownMenu.Item href="/locations/new">New</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+			<li class="has-dropdown" aria-current={page.url.pathname.startsWith('/locations') ? 'page' : undefined}>
+				<button class="nav-trigger">Locations</button>
+				<div class="dropdown-menu">
+					<a href={resolve('/locations')}>All</a>
+					<a href={resolve('/locations/new')}>New</a>
+				</div>
 			</li>
-			<li aria-current={page.url.pathname.startsWith('/tournaments') ? 'page' : undefined}>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger class="nav-trigger">Tournaments</DropdownMenu.Trigger>
-					<DropdownMenu.Content>
-						<DropdownMenu.Item href="/tournaments">All</DropdownMenu.Item>
-						<DropdownMenu.Item href="/tournaments">Results</DropdownMenu.Item>
-						<DropdownMenu.Item href="/tournaments">Signup</DropdownMenu.Item>
-						<DropdownMenu.Item href="/tournaments/new">New</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+			<li class="has-dropdown" aria-current={page.url.pathname.startsWith('/tournaments') ? 'page' : undefined}>
+				<button class="nav-trigger">Tournaments</button>
+				<div class="dropdown-menu">
+					<a href={resolve('/tournaments')}>All</a>
+					<a href={resolve('/tournaments')}>Results</a>
+					<a href={resolve('/tournaments')}>Signup</a>
+					<a href={resolve('/tournaments/new')}>New</a>
+				</div>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -62,10 +55,10 @@
 	<div class="corner right-corner">
 		{#if page.data.user}
 			<form method="POST" action="/better-auth?/signOut">
-				<button type="submit" class="auth-btn">SignOut</button>
+				<button type="submit" class="auth-btn">SignOut {page.data.user.name.split(' ')[0]}</button>
 			</form>
 		{:else}
-			<a href="/better-auth/login" class="auth-btn">SignIn</a>
+			<a href={resolve('/better-auth/login')} class="auth-btn">SignIn</a>
 		{/if}
 		<a href="https://github.com/bobjcondon/bridgeserver">
 			<img src={github} alt="GitHub" />
@@ -197,7 +190,8 @@
 		color: var(--color-theme-1);
 	}
 
-	:global(.nav-trigger) {
+	/* Trigger button styled to match nav links */
+	.nav-trigger {
 		display: flex;
 		height: 100%;
 		align-items: center;
@@ -213,8 +207,48 @@
 		transition: color 0.2s linear;
 	}
 
-	:global(.nav-trigger:hover),
-	:global(.nav-trigger[data-state='open']) {
+	.nav-trigger:hover,
+	.has-dropdown:hover .nav-trigger,
+	.has-dropdown:focus-within .nav-trigger {
 		color: var(--color-theme-1);
+	}
+
+	/* Dropdown panel — hidden until hover/focus */
+	.dropdown-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 50;
+		min-width: 8rem;
+		flex-direction: column;
+		background: white;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0.375rem;
+		padding: 0.25rem;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	}
+
+	.has-dropdown:hover .dropdown-menu,
+	.has-dropdown:focus-within .dropdown-menu {
+		display: flex;
+	}
+
+	/* Override nav a styles for dropdown items */
+	.dropdown-menu a {
+		height: auto;
+		padding: 0.375rem 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 400;
+		text-transform: none;
+		letter-spacing: normal;
+		color: var(--color-text);
+		border-radius: 0.25rem;
+		transition: background 0.1s;
+	}
+
+	.dropdown-menu a:hover {
+		background: rgba(0, 0, 0, 0.06);
+		color: var(--color-text);
 	}
 </style>
