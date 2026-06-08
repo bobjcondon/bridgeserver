@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import DataTable from './data-table.svelte';
+	import DataTable from '$lib/components/data-table.svelte';
 	import { columns } from './columns.js';
 
 	let { data }: PageProps = $props();
@@ -21,5 +21,5 @@
 		</a>
 	</div>
 
-	<DataTable data={data.players} {columns} />
+	<DataTable data={data.players} {columns} rowLabel="player" searchPlaceholder="Search by name or email..." />
 </div>

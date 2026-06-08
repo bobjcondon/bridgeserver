@@ -12,7 +12,8 @@ export const load: PageServerLoad = async () => {
 			email: tournaments.email,
 			datetime: tournaments.datetime,
 			locationId: tournaments.locationId,
-			locationName: locations.name
+			locationName: locations.name,
+			closed: tournaments.closed
 		})
 		.from(tournaments)
 		.leftJoin(locations, eq(tournaments.locationId, locations.id))

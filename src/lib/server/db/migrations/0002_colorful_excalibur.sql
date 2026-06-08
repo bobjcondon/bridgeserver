@@ -1,0 +1,1 @@
+ALTER TABLE `tournaments` ADD `closed` integer DEFAULT false NOT NULL;

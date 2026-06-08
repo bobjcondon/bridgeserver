@@ -2,9 +2,11 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import { locations } from '$lib/server/db/schema';
+import { requirePermission } from '$lib/server/auth-guard';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+	await requirePermission(locals, ['ADMIN', 'DIRECTOR']);
 	const location = await db.query.locations.findFirst({ where: eq(locations.id, params.id) });
 
 	if (!location) error(404, 'Location not found');
@@ -13,7 +15,8 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, locals }) => {
+		await requirePermission(locals, ['ADMIN', 'DIRECTOR']);
 		const data = await request.formData();
 		const name = (data.get('name') as string)?.trim();
 		const email = (data.get('email') as string)?.trim();

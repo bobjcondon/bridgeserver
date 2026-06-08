@@ -1,16 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { tournaments, locations } from '$lib/server/db/schema';
+import { requirePermission } from '$lib/server/auth-guard';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	await requirePermission(locals, ['ADMIN', 'DIRECTOR']);
 	return {
 		locations: await db.select().from(locations).orderBy(locations.name)
 	};
 };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	default: async ({ request, locals }) => {
+		await requirePermission(locals, ['ADMIN', 'DIRECTOR']);
 		const data = await request.formData();
 		const name = (data.get('name') as string)?.trim();
 		const email = (data.get('email') as string)?.trim();

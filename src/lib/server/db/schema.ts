@@ -41,11 +41,14 @@ export const locations = sqliteTable('locations', {
   ...timestamps
 });
 
+
 export const tournaments = sqliteTable('tournaments', {
   id: text('id').primaryKey().$defaultFn(() => nanoid(15)),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
   datetime: integer('datetime', { mode: 'timestamp' }),
+  closed: integer('closed', { mode: 'boolean' }).notNull().default(false),
+  results: text('results'),  // TODO make own class
   locationId: text('location_id')
 	.notNull()
 	.references(() => locations.id),
@@ -59,5 +62,7 @@ export const partnerships = sqliteTable('partnerships', {
   tournamentId: text('tournament_id').references(() => tournaments.id),
   ...timestamps
 });
+
+
 
 export * from './auth.schema';
