@@ -1,0 +1,5 @@
+# Team Registration
+
+A database has tables of users (U) and teams (T).  A team has at least 1 user and at most 2 Users.
+
+Given the constraint "Each user (U) may be a member of at most one team (T), write pseudocode (or typescript) (R).  A registration has 1 or two users

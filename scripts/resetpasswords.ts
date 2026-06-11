@@ -44,7 +44,7 @@ async function resetPasswords() {
     if (result.rowsAffected === 0) {
       console.warn(`  WARN  ${entry.email} — no credential account found (may use OAuth only)`);
     } else {
-      console.log(`  OK    ${entry.email} — password reset, role set to ${entry.}`);
+      console.log(`  OK    ${entry.email} — password reset, role set to ${entry.role}`);
     }
   }
 

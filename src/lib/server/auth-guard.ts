@@ -12,11 +12,11 @@ export async function requirePermission(locals: App.Locals, allowed: Permission[
 	}
 
 	const [dbUser] = await db
-		.select({ permission: userTable.permission })
+		.select({ role: userTable.role })
 		.from(userTable)
 		.where(eq(userTable.id, locals.user.id));
 
-	if (!dbUser || !allowed.includes(dbUser.permission as Permission)) {
+	if (!dbUser || !allowed.includes(dbUser.role as Permission)) {
 		error(403, 'Access denied');
 	}
 }

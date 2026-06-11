@@ -49,17 +49,15 @@ export const tournaments = sqliteTable('tournaments', {
   datetime: integer('datetime', { mode: 'timestamp' }),
   closed: integer('closed', { mode: 'boolean' }).notNull().default(false),
   results: text('results'),  // TODO make own class
-  locationId: text('location_id')
-	.notNull()
-	.references(() => locations.id),
+  locationId: text('location_id').notNull().references(() => locations.id),
   ...timestamps
 });
 
 
 export const partnerships = sqliteTable('partnerships', {
-  player1Id: text('player1_id').references(() => players.id),
+  player1Id: text('player1_id').notNull().references(() => players.id),
   player2Id: text('player2_id').references(() => players.id),
-  tournamentId: text('tournament_id').references(() => tournaments.id),
+  tournamentId: text('tournament_id').notNull().references(() => tournaments.id),
   ...timestamps
 });
 

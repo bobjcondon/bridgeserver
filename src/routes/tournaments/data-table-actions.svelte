@@ -5,8 +5,8 @@
 
 	let { tournament }: { tournament: TournamentRow } = $props();
 
-	const user = $derived(page.data.user as { permission?: string } | undefined);
-	const isEditor = $derived(user?.permission === 'ADMIN' || user?.permission === 'DIRECTOR');
+	const user = $derived(page.data.user as { role?: string } | undefined);
+	const isEditor = $derived(user?.role === 'ADMIN' || user?.role === 'DIRECTOR');
 </script>
 
 <div class="flex items-center gap-3">

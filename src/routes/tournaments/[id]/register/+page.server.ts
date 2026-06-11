@@ -53,7 +53,7 @@ export const actions: Actions = {
 		try {
 			await db.insert(partnerships).values({ player1Id, player2Id: player2Id || null, tournamentId: params.id });
 		} catch {
-			return fail(400, { error: 'Could not add partnership — may already exist' });
+			return fail(400, { error: 'Could not add — player may already be registered' });
 		}
 		return { success: true };
 	},
@@ -75,14 +75,12 @@ export const actions: Actions = {
 		const player2Id = data.get('player2Id') as string | null;
 		const tournamentId = data.get('tournamentId') as string | null;
 		if (!player1Id || !player2Id || !tournamentId) return fail(400, { error: 'Missing data' });
-		// Remove player2 from the pair
 		await db.update(partnerships)
 			.set({ player2Id: null })
 			.where(and(eq(partnerships.player1Id, player1Id), eq(partnerships.tournamentId, tournamentId)));
-		// Give player2 their own solo entry
 		try {
 			await db.insert(partnerships).values({ player1Id: player2Id, player2Id: null, tournamentId });
-		} catch { /* already has a solo entry */ }
+		} catch { /* player2 already has a solo entry */ }
 		return { success: true };
 	}
 };

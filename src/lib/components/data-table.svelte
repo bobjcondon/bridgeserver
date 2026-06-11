@@ -18,9 +18,11 @@
 		columns: ColumnDef<TData, TValue>[];
 		rowLabel?: string;
 		searchPlaceholder?: string;
+		onRowClick?: (row: TData) => void;
+		isRowSelected?: (row: TData) => boolean;
 	};
 
-	let { data, columns, rowLabel = 'item', searchPlaceholder = 'Search...' }: Props = $props();
+	let { data, columns, rowLabel = 'item', searchPlaceholder = 'Search...', onRowClick, isRowSelected }: Props = $props();
 
 	let globalFilter = $state('');
 	let sorting = $state<SortingState>([]);
@@ -93,7 +95,10 @@
 			</Table.Header>
 			<Table.Body>
 				{#each table.getRowModel().rows as row (row.id)}
-					<Table.Row>
+					<Table.Row
+						onclick={() => onRowClick?.(row.original)}
+						class="{onRowClick ? 'cursor-pointer' : ''} {isRowSelected?.(row.original) ? 'bg-accent' : onRowClick ? 'hover:bg-muted/50' : ''}"
+					>
 						{#each row.getVisibleCells() as cell (cell.id)}
 							<Table.Cell>
 								<FlexRender
